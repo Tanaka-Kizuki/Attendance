@@ -20,3 +20,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/time','TimeController@index');
+Route::post('/time/timein','TimeController@timein');
+Route::post('/time/timeout','TimeController@timeout');
