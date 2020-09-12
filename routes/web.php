@@ -24,3 +24,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/time','TimeController@index');
 Route::post('/time/timein','TimeController@timein');
 Route::post('/time/timeout','TimeController@timeout');
+
+// Route::get('/time/msg','TimeController@timein');
