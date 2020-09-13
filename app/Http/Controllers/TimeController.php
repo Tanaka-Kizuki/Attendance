@@ -59,12 +59,13 @@ class TimeController extends Controller
         $user = Auth::user();
         $timeOut = Time::where('user_id',$user->id)->latest()->first();
 
-        if($timeOut->punchIn) {
-            $timeOut->update([
-                'punchOut' => Carbon::now('Asia/Tokyo'),
-            ]);
+        if($timeOut) {
+            if(empty($timeOut->punchOut)) {
+                $timeOut->update([
+                    'punchOut' => Carbon::now('Asia/Tokyo'),
+                ]);
+            }
         }
-
         return redirect()->back();
     }
 }
