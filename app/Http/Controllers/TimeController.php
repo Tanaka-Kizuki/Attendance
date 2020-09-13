@@ -17,9 +17,11 @@ class TimeController extends Controller
     public function timein() {
         // **必要なルール**
         // ・同じ日に2回出勤が押せない(もし打刻されていたらhomeに戻る設定)
-        // ・
         $user = Auth::user();
         $oldtimein = Time::where('user_id',$user->id)->latest()->first();//一番最新のレコードを取得
+
+        $oldDay = '';
+
         if($oldtimein) {
             $oldTimePunchIn = new Carbon($oldtimein->punchIn);
             $oldDay = $oldTimePunchIn->startOfDay();//最後に登録したpunchInの時刻を00:00:00で代入
@@ -34,16 +36,23 @@ class TimeController extends Controller
             'user_id' => $user->id,
             'punchIn' => Carbon::now('Asia/Tokyo'),
         ]);
-        
+
         return redirect()->back();
     }
 
     public function timeOut() {
+        // **必要なルール**
+        // ・同じ日に2回出勤が押せない(もし打刻されていたらhomeに戻る設定)
+
         $user = Auth::user();
-        $timestamp = Time::where('user_id',$user->id)->latest()->first();
-        $timestamp->update([
-            'punchOut' => Carbon::now('Asia/Tokyo'),
-        ]);
-        return redirect('/time');
+        $timeOut = Time::where('user_id',$user->id)->latest()->first();
+
+        if($timeOut->punchIn) {
+            $timeOut->update([
+                'punchOut' => Carbon::now('Asia/Tokyo'),
+            ]);
+        }
+
+        return redirect()->back();
     }
 }
