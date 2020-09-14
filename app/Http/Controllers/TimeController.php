@@ -30,7 +30,7 @@ class TimeController extends Controller
         $today = Carbon::today();//当日の日時を00:00:00で代入
 
         if(($oldDay == $today) && (empty($oldtimein->punchOut))) {
-            return redirect()->back();
+            return redirect()->back()->with('message','出勤打刻済みです');
         }
 
         //退勤後に再度出勤を押せない制御
@@ -40,13 +40,13 @@ class TimeController extends Controller
         }
 
         if(($oldDay == $today)) {
-            return redirect()->back();
+            return redirect()->back()->with('message','退勤打刻済みです');
         }
 
 
         $time = Time::create([
             'user_id' => $user->id,
-            'punchIn' => Carbon::now('Asia/Tokyo'),
+            'punchIn' => Carbon::now(),
         ]);
 
         return redirect()->back();
@@ -62,10 +62,11 @@ class TimeController extends Controller
         if($timeOut) {
             if(empty($timeOut->punchOut)) {
                 $timeOut->update([
-                    'punchOut' => Carbon::now('Asia/Tokyo'),
+                    'punchOut' => Carbon::now(),
                 ]);
+                return redirect()->back()->with('message','お疲れ様でした');
             }
         }
-        return redirect()->back();
+        return redirect()->back()->with('message','退勤打刻済みです');
     }
 }
