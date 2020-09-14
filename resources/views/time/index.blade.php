@@ -4,15 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <style>
+    .timestamp {display: inline-block;}
+    body {text-align:center;}
+  </style>
 </head>
 <body>
-  <form action="/time/timein" method="post">
+  <h1 class="main-title">Attendance</h1>
+
+  <form class="timestamp" action="/time/timein" method="post">
   @csrf
     <input type="submit" value="出勤">
   </form>
-  <form action="/time/timeout" method="post">
+  <form class="timestamp" action="/time/timeout" method="post">
   @csrf
-    <input type="submit" value="出勤">
+    <input type="submit" value="退勤">
   </form>
+
+
 </body>
 </html>
