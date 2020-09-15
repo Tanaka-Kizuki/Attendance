@@ -7,18 +7,23 @@
   <style>
     .timestamp {display: inline-block;}
     body {text-align:center;}
+    button {width: 50px; height: 50px;}
   </style>
+  <script src="{{asset('/js/time.js')}}"></script>
 </head>
 <body>
   <h1 class="main-title">Attendance</h1>
+  <output class="realtime"></output>
   <p>{{session('message')}}</p>
   <form class="timestamp" action="/time/timein" method="post">
   @csrf
-    <input type="submit" value="出勤">
+    <button>
+      出勤
+    </button>
   </form>
   <form class="timestamp" action="/time/timeout" method="post">
   @csrf
-    <input type="submit" value="退勤">
+    <button>退勤</button>
   </form>
 
 
