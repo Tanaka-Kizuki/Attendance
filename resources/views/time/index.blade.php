@@ -26,6 +26,10 @@
     <button>退勤</button>
   </form>
 
+  @foreach ($itmes as $itme)
+  <p>{{$itme->punchIn}}</p>
+  @endforeach
+
 
 </body>
 </html>

@@ -11,7 +11,12 @@ use App\Time;
 class TimeController extends Controller
 {
     public function index() {
-        return view('time.index');
+        $item = Time::all();
+        $today = Carbon::today();
+        $month = intval($today->month);
+        $day = intval($today->day);
+        $items = Time::GetMonthAttendance($month)->GetDayAttendance($day)->get();
+        return view('time.index',['itmes'=>$items]);
     }
 
     public function timein() {
@@ -34,19 +39,24 @@ class TimeController extends Controller
         }
 
         //退勤後に再度出勤を押せない制御
-        if($oldtimein) {
-            $oldTimePunchOut = new Carbon($oldtimein->punchOut);
-            $oldDay = $oldTimePunchOut->startOfDay();//最後に登録したpunchInの時刻を00:00:00で代入
-        }
+        // if($oldtimein) {
+        //     $oldTimePunchOut = new Carbon($oldtimein->punchOut);
+        //     $oldDay = $oldTimePunchOut->startOfDay();//最後に登録したpunchInの時刻を00:00:00で代入
+        // }
 
         if(($oldDay == $today)) {
             return redirect()->back()->with('message','退勤打刻済みです');
         }
 
+        $month = intval($today->month);
+        $day = intval($today->day);
+
 
         $time = Time::create([
             'user_id' => $user->id,
             'punchIn' => Carbon::now(),
+            'month' => $month,
+            'day' => $day,
         ]);
 
         return redirect()->back();
@@ -65,8 +75,22 @@ class TimeController extends Controller
                     'punchOut' => Carbon::now(),
                 ]);
                 return redirect()->back()->with('message','お疲れ様でした');
+            } else {
+                $today = new Carbon();
+                $day = $today->day;
+                $oldPunchOut = new Carbon();
+                $oldPunchOutDay = $oldPunchOut->day;
+                if ($day == $oldPunchOutDay) {
+                    return redirect()->back()->with('message','退勤済みです');
+                } else {
+                    return redirect()->back()->with('message','出勤打刻をしてください');
+                }
             }
+        } else {
+            return redirect()->back()->with('message','出勤打刻がされていません');
         }
-        return redirect()->back()->with('message','退勤打刻済みです');
+
+        
+        
     }
 }
