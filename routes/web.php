@@ -22,7 +22,10 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/time','TimeController@index');
+
+//出退勤打刻
 Route::post('/time/timein','TimeController@timein');
 Route::post('/time/timeout','TimeController@timeout');
-
-// Route::get('/time/msg','TimeController@timein');
+//休憩打刻
+Route::post('/time/breakin','TimeController@breakin');
+Route::post('/time/breakout','TimeController@breakout');

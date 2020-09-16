@@ -19,6 +19,7 @@ class TimeController extends Controller
         return view('time.index',['itmes'=>$items]);
     }
 
+    //出勤アクション
     public function timein() {
         // **必要なルール**
         // ・同じ日に2回出勤が押せない(もし打刻されていたらhomeに戻る設定)
@@ -63,6 +64,7 @@ class TimeController extends Controller
         return redirect()->back();
     }
 
+    //退勤アクション
     public function timeOut() {
         // **必要なルール**
         // ・同じ日に2回出勤が押せない(もし打刻されていたらhomeに戻る設定)
@@ -89,9 +91,32 @@ class TimeController extends Controller
             }
         } else {
             return redirect()->back()->with('message','出勤打刻がされていません');
-        }
-
-        
-        
+        } 
     }
-}
+
+    //休憩開始アクション
+    public function breakIn() {
+        $user = Auth::user();
+        $oldtimein = Time::where('user_id',$user->id)->latest()->first();
+        if($oldtimein->punchIn && !$oldtimein->punchOut && !$oldtimein->breakIn) {
+            $oldtimein->update([
+                'breakIn' => Carbon::now(),
+            ]);
+            return redirect()->back();
+        }
+        return redirect()->back();
+    }
+
+    //休憩終了アクション
+    public function breakOut() {
+        $user = Auth::user();
+        $oldtimein = Time::where('user_id',$user->id)->latest()->first();
+        if($oldtimein->breakIn && !$oldtimein->breakOut) {
+            $oldtimein->update([
+                'breakOut' => Carbon::now(),
+            ]);
+            return redirect()->back();
+        }
+        return redirect()->back();
+    }
+}   
