@@ -11,10 +11,10 @@ use App\Time;
 class TimeController extends Controller
 {
     public function index() {
-        $item = Time::all();
         $today = Carbon::today();
         $month = intval($today->month);
         $day = intval($today->day);
+        //当日の勤怠を取得
         $items = Time::GetMonthAttendance($month)->GetDayAttendance($day)->get();
         return view('time.index',['itmes'=>$items]);
     }
@@ -38,11 +38,11 @@ class TimeController extends Controller
             return redirect()->back()->with('message','出勤打刻済みです');
         }
 
-        //退勤後に再度出勤を押せない制御
-        // if($oldtimein) {
-        //     $oldTimePunchOut = new Carbon($oldtimein->punchOut);
-        //     $oldDay = $oldTimePunchOut->startOfDay();//最後に登録したpunchInの時刻を00:00:00で代入
-        // }
+        // 退勤後に再度出勤を押せない制御
+        if($oldtimein) {
+            $oldTimePunchOut = new Carbon($oldtimein->punchOut);
+            $oldDay = $oldTimePunchOut->startOfDay();//最後に登録したpunchInの時刻を00:00:00で代入
+        }
 
         if(($oldDay == $today)) {
             return redirect()->back()->with('message','退勤打刻済みです');
@@ -54,6 +54,7 @@ class TimeController extends Controller
 
         $time = Time::create([
             'user_id' => $user->id,
+            'user_name' =>$user->name,
             'punchIn' => Carbon::now(),
             'month' => $month,
             'day' => $day,

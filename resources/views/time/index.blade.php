@@ -8,6 +8,8 @@
     .timestamp {display: inline-block;}
     body {text-align:center;}
     button {width: 50px; height: 50px;}
+    table {margin: 0 auto;}
+    tr {text-align: center}
   </style>
   <script src="{{asset('/js/time.js')}}"></script>
 </head>
@@ -26,9 +28,15 @@
     <button>退勤</button>
   </form>
 
-  @foreach ($itmes as $itme)
-  <p>{{$itme->punchIn}}</p>
-  @endforeach
+  <div class="attendance">
+    @foreach ($itmes as $itme)
+    <table>
+      <th>{{$itme->user_name}}</th>
+      <tr><td>出勤</td><td>{{$itme->punchIn}}</td></tr>
+      <tr><td>退勤</td><td>{{$itme->punchOut}}</td></tr>
+    </table>
+    @endforeach
+  </div>
 
 
 </body>
