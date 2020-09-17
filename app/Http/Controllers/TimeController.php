@@ -66,16 +66,28 @@ class TimeController extends Controller
 
     //退勤アクション
     public function timeOut() {
-        // **必要なルール**
-        // ・同じ日に2回出勤が押せない(もし打刻されていたらhomeに戻る設定)
-
+        //ログインユーザーの最新のレコードを取得
         $user = Auth::user();
         $timeOut = Time::where('user_id',$user->id)->latest()->first();
 
+        //string → datetime型
+        $now = new Carbon();
+        $punchIn = new Carbon($timeOut->punchIn);
+        $breakIn = new Carbon($timeOut->breakIn);
+        $breakOut = new Carbon($timeOut->breakOut);
+        //実労時間(Minute)
+        $stayTime = $punchIn->diffInMinutes($now);
+        $breakTime = $breakIn-> diffInMinutes($breakOut);
+        $workingMinute = $stayTime - $breakTime;
+        //15分刻み
+        $workingHour = ceil($workingMinute / 15) * 0.25;
+
+        //退勤処理がされていない場合のみ退勤処理を実行
         if($timeOut) {
             if(empty($timeOut->punchOut)) {
                 $timeOut->update([
                     'punchOut' => Carbon::now(),
+                    'workTime' => $workingHour
                 ]);
                 return redirect()->back()->with('message','お疲れ様でした');
             } else {
@@ -119,4 +131,4 @@ class TimeController extends Controller
         }
         return redirect()->back();
     }
-}   
+}
