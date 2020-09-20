@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <style>p{display: inline}</style>
 </head>
 <body>
 <form action="/time/performance" method="post">
@@ -13,6 +14,7 @@
   <option>{{$i}}</option>
   @endfor
   </select>
+  <p>月</p>
   <input type="submit" value="選択">
 </form>
 
@@ -29,5 +31,6 @@
     </div>
     @endforeach
   </div>
+  <a href="/time">戻る</a>
 </body>
 </html>

@@ -139,10 +139,7 @@ class TimeController extends Controller
     }
     public function result(Request $request) {
         $user = Auth::user();
-        $datas = Time::where('user_id',$user->id)->where('month',$request->month)->get();
-        foreach($datas as $data) {
-            $punchIn = new Carbon($data->punchIn);
-        }
+        $items = Time::where('user_id',$user->id)->where('month',$request->month)->get();
         return view('time.performance',['itmes'=>$items]);
     }
 }
