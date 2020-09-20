@@ -131,4 +131,18 @@ class TimeController extends Controller
         }
         return redirect()->back();
     }
+
+    //勤怠実績
+    public function performance() {
+        $items = [];
+        return view('time.performance',['itmes'=>$items]);
+    }
+    public function result(Request $request) {
+        $user = Auth::user();
+        $datas = Time::where('user_id',$user->id)->where('month',$request->month)->get();
+        foreach($datas as $data) {
+            $punchIn = new Carbon($data->punchIn);
+        }
+        return view('time.performance',['itmes'=>$items]);
+    }
 }
