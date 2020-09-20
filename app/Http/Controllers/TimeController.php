@@ -51,6 +51,7 @@ class TimeController extends Controller
 
         $month = intval($today->month);
         $day = intval($today->day);
+        $year = intval($today->year);
 
 
         $time = Time::create([
@@ -59,6 +60,7 @@ class TimeController extends Controller
             'punchIn' => Carbon::now(),
             'month' => $month,
             'day' => $day,
+            'year' => $year,
         ]);
 
         return redirect()->back();
@@ -139,7 +141,7 @@ class TimeController extends Controller
     }
     public function result(Request $request) {
         $user = Auth::user();
-        $items = Time::where('user_id',$user->id)->where('month',$request->month)->get();
+        $items = Time::where('user_id',$user->id)->where('year',$request->year)->where('month',$request->month)->get();
         return view('time.performance',['itmes'=>$items]);
     }
 }

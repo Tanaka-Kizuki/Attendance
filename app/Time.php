@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Time extends Model
 {
-    protected $fillable = ['user_id','user_name', 'punchIn', 'punchOut','month','day','breakIn','breakOut','workTime'];
+    protected $fillable = ['user_id','user_name', 'punchIn', 'punchOut','month','day','breakIn','breakOut','workTime','year'];
 
     
     // リレーション

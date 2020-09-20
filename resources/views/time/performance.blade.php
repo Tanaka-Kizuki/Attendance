@@ -9,11 +9,20 @@
 <body>
 <form action="/time/performance" method="post">
   @csrf
-  <select name="month">
-  @for($i=1; $i <= 12; $i++)
-  <option>{{$i}}</option>
-  @endfor
+  <select name="year">
+    @for($i=2019; $i <= 2030; $i++)
+    <option>{{$i}}</option>
+    @endfor
   </select>
+
+  <p>年</p>
+
+  <select name="month">
+    @for($i=1; $i <= 12; $i++)
+    <option>{{$i}}</option>
+    @endfor
+  </select>
+
   <p>月</p>
   <input type="submit" value="選択">
 </form>
