@@ -87,11 +87,15 @@ class TimeController extends Controller
         //退勤処理がされていない場合のみ退勤処理を実行
         if($timeOut) {
             if(empty($timeOut->punchOut)) {
-                $timeOut->update([
-                    'punchOut' => Carbon::now(),
-                    'workTime' => $workingHour
-                ]);
-                return redirect()->back()->with('message','お疲れ様でした');
+                if($timeOut->breakIn && !$timeOut->breakOut) {
+                    return redirect()->back()->with('message','休憩終了が打刻されていません');
+                } else {
+                    $timeOut->update([
+                        'punchOut' => Carbon::now(),
+                        'workTime' => $workingHour
+                    ]);
+                    return redirect()->back()->with('message','お疲れ様でした');
+                }
             } else {
                 $today = new Carbon();
                 $day = $today->day;
