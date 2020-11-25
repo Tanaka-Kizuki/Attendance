@@ -21,7 +21,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/time','TimeController@index');
+Route::get('/','TimeController@index');
 
 //出退勤打刻
 Route::post('/time/timein','TimeController@timein');

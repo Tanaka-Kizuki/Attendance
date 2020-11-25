@@ -40,6 +40,6 @@
     </div>
     @endforeach
   </div>
-  <a href="/time">戻る</a>
+  <a href="/">戻る</a>
 </body>
 </html>
