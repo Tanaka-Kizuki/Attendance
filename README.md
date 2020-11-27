@@ -23,7 +23,7 @@
 
 ファイル名の変更
 
-`.env.e` → `.env.example`
+`.env.example` → `.env`
 
 DBの設定
 
